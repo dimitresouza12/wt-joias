@@ -101,6 +101,7 @@ const categorias: Categoria[] = [
     eyebrow: "Mais Vendidas · 2mm",
     title: "CORRENTES 2MM",
     description: "As mais vendidas da casa. Correntes finas banhadas a ouro 18k, perfeitas para usar com pingentes ou soltas. Elo fino, caimento leve e presença garantida.",
+    group: "Correntes",
     pecas: range(11).map(corrente2mm),
   },
   {
@@ -108,6 +109,7 @@ const categorias: Categoria[] = [
     eyebrow: "Correntes · 4mm ou mais",
     title: "CORRENTES 4MM+",
     description: "Correntes com presença. Elos mais robustos, acabamento espelhado e fecho gaveta de segurança. Para quem quer ser visto.",
+    group: "Correntes",
     pecas: range(10).map(corrente4mm),
   },
   {
@@ -115,6 +117,7 @@ const categorias: Categoria[] = [
     eyebrow: "Pingentes · Correntes até 2mm",
     title: "PINGENTES FINOS",
     description: "Coleção de pingentes delicados banhados a ouro 18k. Servem em correntes de até 2mm. Crucifixos, medalhas e peças cravejadas.",
+    group: "Pingentes",
     pecas: range(22).map(pingenteP),
   },
   {
@@ -122,6 +125,7 @@ const categorias: Categoria[] = [
     eyebrow: "Pingentes · Correntes até 6mm",
     title: "PINGENTES GRANDES",
     description: "Pingentes com presença. Servem em correntes de até 6mm. Para quem busca um look mais imponente e marcante.",
+    group: "Pingentes",
     pecas: range(12).map(pingenteM),
   },
   {
@@ -129,6 +133,7 @@ const categorias: Categoria[] = [
     eyebrow: "Pulseiras · 1mm ou mais",
     title: "PULSEIRAS FINAS",
     description: "Pulseiras delicadas banhadas a ouro 18k. Elo fino, caimento suave. As mais buscadas para uso diário.",
+    group: "Pulseiras",
     pecas: range(7).map(pulseiraFina),
   },
   {
@@ -136,6 +141,7 @@ const categorias: Categoria[] = [
     eyebrow: "Pulseiras · 4mm ou mais",
     title: "PULSEIRAS 4MM+",
     description: "Pulseiras com presença. Elo robusto, acabamento espelhado, fecho gaveta de segurança. Do modelo mais discreto ao mais imponente.",
+    group: "Pulseiras",
     pecas: range(17).map(pulseira4mm),
   },
   {
@@ -143,6 +149,7 @@ const categorias: Categoria[] = [
     eyebrow: "Braceletes",
     title: "BRACELETES",
     description: "Braceletes rígidos banhados a ouro 18k. Acabamento premium e presença de sobra no pulso.",
+    group: "Braceletes",
     pecas: [
       {
         src: "/braceletes/bracelete-escamado-22mm.jpeg",

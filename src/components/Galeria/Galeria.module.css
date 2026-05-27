@@ -60,6 +60,51 @@
   margin: 0;
 }
 
+/* ── Filter bar ── */
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  position: sticky;
+  top: 46px;
+  z-index: 50;
+  background: var(--bg);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.filterBtn {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s, background 0.25s;
+  line-height: 1;
+}
+
+.filterBtn:hover {
+  color: var(--gold);
+  border-color: rgba(201, 162, 76, 0.45);
+}
+
+.filterActive {
+  color: var(--bg);
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.filterActive:hover {
+  color: var(--bg);
+}
+
 /* ── Bloco por categoria ── */
 .block {
   margin-bottom: clamp(3.5rem, 7vw, 5.5rem);
