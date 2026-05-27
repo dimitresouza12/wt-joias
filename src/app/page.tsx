@@ -1,75 +1,163 @@
-import Hero          from "@/components/Hero/Hero";
-import Conceito      from "@/components/Conceito/Conceito";
-import ScrollCamera  from "@/components/ScrollCamera/ScrollCamera";
+import Hero              from "@/components/Hero/Hero";
+import Conceito          from "@/components/Conceito/Conceito";
+import ScrollCamera      from "@/components/ScrollCamera/ScrollCamera";
 import Galeria, { type Categoria } from "@/components/Galeria/Galeria";
-import WhatsAppCTA   from "@/components/WhatsAppCTA/WhatsAppCTA";
-import WhatsAppButton from "@/components/WhatsAppButton/WhatsAppButton";
+import WhatsAppCTA       from "@/components/WhatsAppCTA/WhatsAppCTA";
+import WhatsAppButton    from "@/components/WhatsAppButton/WhatsAppButton";
+import PromoNamorados    from "@/components/PromoNamorados/PromoNamorados";
+import AnuncioBanner     from "@/components/AnuncioBanner/AnuncioBanner";
+import VideoGaleria      from "@/components/VideoGaleria/VideoGaleria";
 
 const WA_PHONE = "5588994068397";
 const WA_BASE  = `https://wa.me/${WA_PHONE}?text=`;
 
 const enc = (s: string) => encodeURIComponent(s);
 
-/* Mensagens "macro" das categorias (CTAs do ScrollCamera) */
-const MSG_CATALOGO    = enc("Olá! Acessei o site de vocês e gostaria de receber o catálogo de joias disponíveis hoje e fazer uma cotação em ouro 18k.");
-const MSG_CORDAO      = enc("Olá! Tenho interesse nos cordões e correntes em ouro 18k. Podem me mostrar os modelos disponíveis e cotação do dia? #QueroCordao");
-const MSG_PINGENTE    = enc("Olá! Tenho interesse em pingentes e peças personalizadas em ouro 18k. Podem me mostrar os modelos disponíveis? #QueroPingente");
-const MSG_ACESSORIOS  = enc("Olá! Tenho interesse em pulseiras, anéis e dediras em ouro 18k. Podem me mostrar os modelos disponíveis? #QueroAcessorios");
-const MSG_FEMININO    = enc("Olá! Tenho interesse nos cordões femininos em ouro 18k. Podem me mostrar os modelos disponíveis e cotação do dia? #QueroCordaoFeminino");
-const MSG_CONSULTOR   = enc("Olá! Acessei o site da WT Joias e gostaria de falar com um consultor VIP para cotar uma peça em ouro 18k.");
+const MSG_CATALOGO    = enc("Olá! Acessei o site de vocês e gostaria de receber o catálogo de joias disponíveis banhadas a ouro 18k.");
+const MSG_CORDAO      = enc("Olá! Tenho interesse nos cordões e correntes banhados a ouro 18k. Podem me mostrar os modelos disponíveis? #QueroCordao");
+const MSG_PINGENTE    = enc("Olá! Tenho interesse em pingentes e peças personalizadas banhadas a ouro 18k. Podem me mostrar os modelos disponíveis? #QueroPingente");
+const MSG_ACESSORIOS  = enc("Olá! Tenho interesse em pulseiras, anéis e dediras banhados a ouro 18k. Podem me mostrar os modelos disponíveis? #QueroAcessorios");
+const MSG_CONSULTOR   = enc("Olá! Acessei o site da WT Joias e gostaria de falar com um consultor para ver as peças banhadas a ouro 18k disponíveis.");
+const MSG_PROMO       = enc("Olá! Vi a promoção de Dia dos Namorados no site da WT Joias. Quero aproveitar os descontos especiais nos conjuntos femininos e kits masculinos. Podem me mostrar o que está disponível? #PromoNamorados");
 
-/* Helper — gera link de cotação direta de uma peça */
 const cotar = (nome: string, tag: string) =>
-  WA_BASE + enc(`Olá! Vi no site da WT Joias a peça "${nome}" e queria saber se está disponível, o peso exato e a cotação do dia em ouro 18k. ${tag}`);
+  WA_BASE + enc(`Olá! Vi no site da WT Joias a peça "${nome}" banhada a ouro 18k e gostaria de saber se está disponível e o valor. ${tag}`);
+
+// ── helpers para gerar itens de catálogo ─────────────────────────────
+
+const corrente2mm = (n: number) => {
+  const num = String(n).padStart(2, "0");
+  return {
+    src: `/correntes-2mm/corrente-2mm-${num}.jpeg`,
+    alt: `Corrente 2mm banhada a ouro 18k — modelo ${num}`,
+    name: `Corrente 2mm · Modelo ${num}`,
+    detail: "Banhada a ouro 18k",
+    ctaHref: cotar(`Corrente 2mm Modelo ${num}`, "#QueroCorrente"),
+  };
+};
+
+const corrente4mm = (n: number) => {
+  const num = String(n).padStart(2, "0");
+  return {
+    src: `/correntes-4mm/corrente-4mm-${num}.jpeg`,
+    alt: `Corrente 4mm+ banhada a ouro 18k — modelo ${num}`,
+    name: `Corrente 4mm+ · Modelo ${num}`,
+    detail: "Banhada a ouro 18k",
+    ctaHref: cotar(`Corrente 4mm+ Modelo ${num}`, "#QueroCorrente"),
+  };
+};
+
+const pingenteP = (n: number) => {
+  const num = String(n).padStart(2, "0");
+  return {
+    src: `/pingentes-p/pingente-p-${num}.jpeg`,
+    alt: `Pingente banhado a ouro 18k — correntes até 2mm — modelo ${num}`,
+    name: `Pingente · Modelo ${num}`,
+    detail: "Correntes até 2mm",
+    ctaHref: cotar(`Pingente P${num} (correntes até 2mm)`, "#QueroPingente"),
+  };
+};
+
+const pingenteM = (n: number) => {
+  const num = String(n).padStart(2, "0");
+  return {
+    src: `/pingentes-m/pingente-m-${num}.jpeg`,
+    alt: `Pingente grande banhado a ouro 18k — correntes até 6mm — modelo ${num}`,
+    name: `Pingente · Modelo ${num}`,
+    detail: "Correntes até 6mm",
+    ctaHref: cotar(`Pingente M${num} (correntes até 6mm)`, "#QueroPingente"),
+  };
+};
+
+const pulseira4mm = (n: number) => {
+  const num = String(n).padStart(2, "0");
+  return {
+    src: `/pulseiras-4mm/pulseira-4mm-${num}.jpeg`,
+    alt: `Pulseira 4mm+ banhada a ouro 18k — modelo ${num}`,
+    name: `Pulseira 4mm+ · Modelo ${num}`,
+    detail: "Banhada a ouro 18k",
+    ctaHref: cotar(`Pulseira 4mm+ Modelo ${num}`, "#QueroAcessorios"),
+  };
+};
+
+const pulseiraFina = (n: number) => {
+  const num = String(n).padStart(2, "0");
+  return {
+    src: `/pulseiras-finas/pulseira-fina-${num}.jpeg`,
+    alt: `Pulseira fina banhada a ouro 18k — modelo ${num}`,
+    name: `Pulseira Fina · Modelo ${num}`,
+    detail: "1mm · Banhada a ouro 18k",
+    ctaHref: cotar(`Pulseira Fina Modelo ${num}`, "#QueroAcessorios"),
+  };
+};
+
+// ── catálogo completo ─────────────────────────────────────────────────
+
+const range = (n: number) => Array.from({ length: n }, (_, i) => i + 1);
 
 const categorias: Categoria[] = [
   {
-    id: "catalogo-cordoes",
-    eyebrow: "Cordões & Correntes",
-    title: "CORDÕES & CORRENTES",
-    description: "Peças maciças em ouro 18k legítimo, polimento espelhado e fecho gaveta. Pesos sob consulta — a cotação do dia define o valor final.",
-    pecas: [
-      { src: "/joias/cordoes/meia-cana.jpg",   alt: "Cordão Meia Cana em ouro 18k",         name: "Cordão Meia Cana",     detail: "Maciço · Acabamento espelhado",  ctaHref: cotar("Cordão Meia Cana 18k",      "#QueroCordao-MeiaCana") },
-      { src: "/joias/cordoes/tijolinho-5mm.jpg", alt: "Cordão Tijolinho 5mm em ouro 18k",   name: "Cordão Tijolinho",     detail: "Elo 5mm · Trama fechada",        ctaHref: cotar("Cordão Tijolinho 5mm",      "#QueroCordao-Tijolinho") },
-      { src: "/joias/cordoes/veneziana.jpg",   alt: "Corrente Veneziana fina em ouro 18k", name: "Corrente Veneziana",   detail: "Modelo fino · Caimento perfeito", ctaHref: cotar("Corrente Veneziana fina",   "#QueroCordao-Veneziana") },
-      { src: "/joias/cordoes/escapulario.jpg", alt: "Escapulário em ouro 18k",              name: "Escapulário",          detail: "Tradicional · Duas medalhas",    ctaHref: cotar("Escapulário 18k",            "#QueroCordao-Escapulario") },
-    ],
+    id: "catalogo-correntes-2mm",
+    eyebrow: "Mais Vendidas · 2mm",
+    title: "CORRENTES 2MM",
+    description: "As mais vendidas da casa. Correntes finas banhadas a ouro 18k, perfeitas para usar com pingentes ou soltas. Elo fino, caimento leve e presença garantida.",
+    pecas: range(11).map(corrente2mm),
   },
   {
-    id: "catalogo-femininos",
-    eyebrow: "Linha Feminina",
-    title: "CORDÕES FEMININOS",
-    description: "Correntes finas em ouro 18k com pingentes delicados — solitários, medalhas devocionais e peças cravejadas. Pesos leves, caimento perfeito para uso diário.",
-    pecas: [
-      { src: "/joias/cordoes-femininos/pave-redondo.jpg",       alt: "Cordão feminino com pingente redondo cravejado em ouro 18k",  name: "Cordão Pavé Redondo",      detail: "Pingente cravejado · Veneziana fina", ctaHref: cotar("Cordão Pavé Redondo (feminino)",      "#QueroCordaoFem-PaveRedondo") },
-      { src: "/joias/cordoes-femininos/solitario-zirconia.jpg", alt: "Cordão feminino com solitário de zircônia em ouro 18k",       name: "Cordão Solitário",         detail: "Ponto de luz · Corrente delicada",    ctaHref: cotar("Cordão Solitário Zircônia (feminino)", "#QueroCordaoFem-Solitario") },
-      { src: "/joias/cordoes-femininos/abencoada.jpg",          alt: "Cordão feminino com medalha Abençoada em ouro 18k",            name: "Cordão Abençoada",         detail: "Medalha gravada · Corrente fina",     ctaHref: cotar("Cordão Abençoada (feminino)",          "#QueroCordaoFem-Abencoada") },
-      { src: "/joias/cordoes-femininos/espirito-santo.jpg",     alt: "Cordão feminino com medalha Divino Espírito Santo em ouro 18k", name: "Cordão Espírito Santo",   detail: "Medalha devocional · Pomba em relevo", ctaHref: cotar("Cordão Espírito Santo (feminino)",     "#QueroCordaoFem-EspiritoSanto") },
-      { src: "/joias/cordoes-femininos/gota-cravejada.jpg",     alt: "Cordão feminino com pingente gota cravejada em ouro 18k",      name: "Cordão Gota Cravejada",    detail: "Statement · Pavé completo",           ctaHref: cotar("Cordão Gota Cravejada (feminino)",     "#QueroCordaoFem-GotaCravejada") },
-    ],
+    id: "catalogo-correntes-4mm",
+    eyebrow: "Correntes · 4mm ou mais",
+    title: "CORRENTES 4MM+",
+    description: "Correntes com presença. Elos mais robustos, acabamento espelhado e fecho gaveta de segurança. Para quem quer ser visto.",
+    pecas: range(10).map(corrente4mm),
   },
   {
-    id: "catalogo-pingentes",
-    eyebrow: "Pingentes & Personalizados",
-    title: "PINGENTES & PERSONALIZADOS",
-    description: "Crucifixos, medalhas e peças cravejadas. Encomende personalizações — placas, letras e cifrões sob medida em ouro 18k maciço.",
-    pecas: [
-      { src: "/joias/pingentes/cruz-cravejada.jpg",    alt: "Pingente Cruz Cravejada em ouro 18k",    name: "Cruz Cravejada",        detail: "Pedraria · Pavé completo",        ctaHref: cotar("Pingente Cruz Cravejada",   "#QueroPingente-CruzCravejada") },
-      { src: "/joias/pingentes/cruz.jpg",              alt: "Pingente Cruz lisa em ouro 18k",         name: "Cruz Clássica",         detail: "Lisa · Polimento espelhado",      ctaHref: cotar("Pingente Cruz Clássica",     "#QueroPingente-Cruz") },
-      { src: "/joias/pingentes/nossa-senhora.jpg",     alt: "Pingente Nossa Senhora em ouro 18k",     name: "Medalha Nossa Senhora", detail: "Devocional · Detalhes em relevo", ctaHref: cotar("Medalha Nossa Senhora",      "#QueroPingente-NossaSenhora") },
-    ],
+    id: "catalogo-pingentes-p",
+    eyebrow: "Pingentes · Correntes até 2mm",
+    title: "PINGENTES FINOS",
+    description: "Coleção de pingentes delicados banhados a ouro 18k. Servem em correntes de até 2mm. Crucifixos, medalhas e peças cravejadas.",
+    pecas: range(22).map(pingenteP),
   },
   {
-    id: "catalogo-pulseiras-aneis",
-    eyebrow: "Pulseiras & Anéis",
-    title: "PULSEIRAS & ANÉIS",
-    description: "Pulseiras maciças com fecho gaveta e anéis com presença. Sob medida em tamanho e gramatura — fechamos do mais discreto ao mais imponente.",
+    id: "catalogo-pingentes-m",
+    eyebrow: "Pingentes · Correntes até 6mm",
+    title: "PINGENTES GRANDES",
+    description: "Pingentes com presença. Servem em correntes de até 6mm. Para quem busca um look mais imponente e marcante.",
+    pecas: range(12).map(pingenteM),
+  },
+  {
+    id: "catalogo-pulseiras-finas",
+    eyebrow: "Pulseiras · 1mm ou mais",
+    title: "PULSEIRAS FINAS",
+    description: "Pulseiras delicadas banhadas a ouro 18k. Elo fino, caimento suave. As mais buscadas para uso diário.",
+    pecas: range(7).map(pulseiraFina),
+  },
+  {
+    id: "catalogo-pulseiras-4mm",
+    eyebrow: "Pulseiras · 4mm ou mais",
+    title: "PULSEIRAS 4MM+",
+    description: "Pulseiras com presença. Elo robusto, acabamento espelhado, fecho gaveta de segurança. Do modelo mais discreto ao mais imponente.",
+    pecas: range(17).map(pulseira4mm),
+  },
+  {
+    id: "catalogo-braceletes",
+    eyebrow: "Braceletes",
+    title: "BRACELETES",
+    description: "Braceletes rígidos banhados a ouro 18k. Acabamento premium e presença de sobra no pulso.",
     pecas: [
-      { src: "/joias/pulseiras/6mm.jpg",        alt: "Pulseira 6mm em ouro 18k",          name: "Pulseira 6mm",         detail: "Elo robusto · Imponente",        ctaHref: cotar("Pulseira 6mm",          "#QueroAcessorios-Pulseira6mm") },
-      { src: "/joias/pulseiras/4mm.jpg",        alt: "Pulseira 4mm em ouro 18k",          name: "Pulseira 4mm",         detail: "Elo equilibrado · Versátil",     ctaHref: cotar("Pulseira 4mm",          "#QueroAcessorios-Pulseira4mm") },
-      { src: "/joias/pulseiras/baiana-3mm.jpg", alt: "Pulseira Baiana 3mm em ouro 18k",   name: "Pulseira Baiana 3mm",  detail: "Trançada · Caimento fluido",     ctaHref: cotar("Pulseira Baiana 3mm",   "#QueroAcessorios-PulseiraBaiana") },
-      { src: "/joias/pulseiras/cadeada.jpg",    alt: "Pulseira Cadeada em ouro 18k",      name: "Pulseira Cadeada",     detail: "Elo cadeado · Visual masculino", ctaHref: cotar("Pulseira Cadeada",      "#QueroAcessorios-PulseiraCadeada") },
-      { src: "/joias/aneis/dedeira.jpg",        alt: "Anel Dedeira em ouro 18k",          name: "Anel Dedeira",         detail: "Maciço · Pegada forte",          ctaHref: cotar("Anel Dedeira",          "#QueroAcessorios-AnelDedeira") },
+      {
+        src: "/braceletes/bracelete-escamado-22mm.jpeg",
+        alt: "Bracelete Escamado 22mm banhado a ouro 18k",
+        name: "Bracelete Escamado 22mm",
+        detail: "Elo escamado · Acabamento espelhado",
+        ctaHref: cotar("Bracelete Escamado 22mm", "#QueroAcessorios"),
+      },
+      {
+        src: "/braceletes/bracelete-escamado-22mm-b.jpeg",
+        alt: "Bracelete Escamado 22mm variação banhado a ouro 18k",
+        name: "Bracelete Escamado 22mm",
+        detail: "Variação · Acabamento espelhado",
+        ctaHref: cotar("Bracelete Escamado 22mm (var. B)", "#QueroAcessorios"),
+      },
     ],
   },
 ];
@@ -77,12 +165,15 @@ const categorias: Categoria[] = [
 export default function Page() {
   return (
     <main>
+      {/* Faixa ticker — Promoção Dia dos Namorados */}
+      <AnuncioBanner ctaHref={WA_BASE + MSG_PROMO} />
+
       {/* 01 — Hero */}
       <Hero
         videoSrc="/hero.mp4"
-        lines={["O PODER DO OURO 18K.", "SUA MARCA REGISTRADA."]}
+        lines={["O BRILHO DO OURO 18K.", "SUA MARCA REGISTRADA."]}
         goldLineIndex={1}
-        subHeadline="Cordões, pulseiras e anéis imponentes projetados para quem não aceita menos que o topo. Peças legítimas com garantia eterna de autenticidade. Escolha seu estilo."
+        subHeadline="Cordões, pulseiras e anéis com acabamento premium, banhados a ouro 18k. Peças com estilo e qualidade para quem valoriza presença. Escolha seu modelo."
         ctaLabel="VER CATÁLOGO COMPLETO NO WHATSAPP"
         ctaHref={WA_BASE + MSG_CATALOGO}
         navLinks={[
@@ -93,76 +184,82 @@ export default function Page() {
         ]}
       />
 
-      {/* 02 — Conceito & Diferenciais */}
+      {/* 02 — Promoção Dia dos Namorados */}
+      <PromoNamorados phone={WA_PHONE} igHandle="wtjoias18k" />
+
+      {/* 03 — Conceito & Diferenciais */}
       <Conceito
         eyebrow="O Conceito"
-        title="AUTENTICIDADE SE PROVA EM CADA ELO."
-        body="Na WT Joias, cada peça nasce de ouro 18k legítimo (750), trabalhada por ourives veteranos e finalizada com polimento espelhado. Não vendemos folheados, não vendemos banhados — entregamos patrimônio para ser usado todo dia."
+        title="ESTILO QUE SE PROVA EM CADA DETALHE."
+        body="Na WT Joias, cada peça é cuidadosamente selecionada e acabada com banho de ouro 18k de alta qualidade, garantindo brilho duradouro e aparência premium. Modelos exclusivos com design sofisticado para quem exige o melhor."
         diferenciais={[
           {
             number: "01",
-            title: "Ouro 18k Legítimo",
-            text: "Certificado de garantia eterna do teor do ouro 750. Cada peça acompanha laudo de autenticidade e marcação a fogo.",
+            title: "Banhado a Ouro 18k",
+            text: "Todas as peças passam por processo de banho de ouro 18k, garantindo brilho intenso, acabamento espelhado e durabilidade no uso diário.",
           },
           {
             number: "02",
             title: "Acabamento Premium",
-            text: "Peças maciças com polimento espelhado, soldas invisíveis e fechos gaveta de alta segurança que travam de verdade.",
+            text: "Peças com polimento espelhado, soldas imperceptíveis e fechos de alta segurança — atenção ao detalhe em cada centímetro.",
           },
           {
             number: "03",
             title: "Envio Seguro com Seguro",
-            text: "Logística blindada com seguro total para todo o Brasil. Sua joia chega em embalagem discreta e rastreada porta a porta.",
+            text: "Logística com seguro total para todo o Brasil. Sua joia chega em embalagem discreta e rastreada, porta a porta.",
           },
         ]}
       />
 
-      {/* 03 — Vitrine cinematográfica */}
+      {/* 04 — Vitrine cinematográfica */}
       <ScrollCamera
         sectionId="colecao"
         sectionTitle="COLEÇÃO"
         card1={{
-          src: "/joias/cordoes/meia-cana.jpg",
-          alt: "Cordões e correntes em ouro 18k — Grumet, Cartier, Veneziana e Piastrine",
+          src: "/correntes-2mm/corrente-2mm-01.jpeg",
+          alt: "Correntes e cordões banhados a ouro 18k",
           badge: "Cordões & Correntes",
           name: "PRESENÇA INCONFUNDÍVEL",
-          description: "Grumet, Cartier, Cordão Baiano e Piastrine. Correntes maciças, feitas para se destacar.",
+          description: "Correntes 2mm e 4mm+ com acabamento espelhado. Feitas para se destacar no dia a dia.",
           ctaLabel: "Ver Modelos Disponíveis",
           ctaHref: WA_BASE + MSG_CORDAO,
         }}
         card2={{
-          src: "/joias/pingentes/cruz-cravejada.jpg",
-          alt: "Pingentes e personalizados em ouro 18k — crucifixos, placas e letras",
-          badge: "Pingentes & Personalizados",
+          src: "/pingentes-m/pingente-m-01.jpeg",
+          alt: "Pingentes banhados a ouro 18k",
+          badge: "Pingentes",
           name: "SUA HISTÓRIA EM OURO",
-          description: "Crucifixos, placas, letras cravejadas e cifrões. Suas conquistas em peças maciças.",
+          description: "Crucifixos, medalhas e peças cravejadas. Suas conquistas em acabamento premium.",
           ctaLabel: "Ver Modelos Disponíveis",
           ctaHref: WA_BASE + MSG_PINGENTE,
         }}
         card3={{
-          src: "/joias/pulseiras/cadeada.jpg",
-          alt: "Pulseiras, anéis e dediras em ouro 18k — elo duplo e dediras",
-          badge: "Pulseiras & Anéis",
+          src: "/pulseiras-4mm/pulseira-4mm-01.jpeg",
+          alt: "Pulseiras banhadas a ouro 18k",
+          badge: "Pulseiras & Braceletes",
           name: "TOQUE FINAL DE PODER",
-          description: "Pulseiras maciças, dediras e anéis. A sofisticação que fecha o conjunto com autoridade.",
+          description: "Pulseiras finas, 4mm+ e braceletes. A sofisticação que fecha o conjunto com autoridade.",
           ctaLabel: "Ver Modelos Disponíveis",
           ctaHref: WA_BASE + MSG_ACESSORIOS,
         }}
       />
 
-      {/* 04 — Catálogo real com fotos */}
+      {/* 05 — Catálogo completo com fotos */}
       <Galeria categorias={categorias} />
 
-      {/* 05 — CTA Final */}
+      {/* 06 — Vídeos das peças */}
+      <VideoGaleria />
+
+      {/* 07 — CTA Final */}
       <WhatsAppCTA
         phone={WA_PHONE}
         message={decodeURIComponent(MSG_CONSULTOR)}
         eyebrow="Pronto para encomendar?"
-        headline="FALE COM UM CONSULTOR VIP"
-        sub="Nossa equipe envia o catálogo do dia, cotação atualizada do grama do ouro e fotos reais das peças disponíveis. Atendimento rápido e discreto pelo WhatsApp."
+        headline="FALE COM UM CONSULTOR"
+        sub="Nossa equipe envia o catálogo do dia, fotos reais das peças disponíveis e todas as informações sobre os modelos banhados a ouro 18k. Atendimento rápido e discreto pelo WhatsApp."
       />
 
-      {/* Botão flutuante com anel dourado */}
+      {/* Botão flutuante */}
       <WhatsAppButton
         phone={WA_PHONE}
         message={decodeURIComponent(MSG_CONSULTOR)}

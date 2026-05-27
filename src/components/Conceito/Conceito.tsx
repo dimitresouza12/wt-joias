@@ -22,25 +22,25 @@ type Props = {
 const DEFAULT_DIFERENCIAIS: Diferencial[] = [
   {
     number: "01",
-    title: "Ouro 18k Legítimo",
-    text: "Certificado de garantia eterna do teor do ouro 750. Cada peça acompanha laudo de autenticidade e marcação a fogo.",
+    title: "Banhado a Ouro 18k",
+    text: "Todas as peças passam por processo de banho de ouro 18k, garantindo brilho intenso, acabamento espelhado e durabilidade no uso diário.",
   },
   {
     number: "02",
     title: "Acabamento Premium",
-    text: "Peças maciças com polimento espelhado, soldas invisíveis e fechos gaveta de alta segurança que travam de verdade.",
+    text: "Peças com polimento espelhado, soldas imperceptíveis e fechos de alta segurança — atenção ao detalhe em cada centímetro.",
   },
   {
     number: "03",
     title: "Envio Seguro com Seguro",
-    text: "Logística blindada com seguro total para todo o Brasil. Sua joia chega em embalagem discreta e rastreada porta a porta.",
+    text: "Logística com seguro total para todo o Brasil. Sua joia chega em embalagem discreta e rastreada porta a porta.",
   },
 ];
 
 export default function Conceito({
   eyebrow = "O Conceito",
-  title = "AUTENTICIDADE SE PROVA EM CADA ELO.",
-  body = "Na WT Joias, cada peça nasce de ouro 18k legítimo (750), trabalhada por ourives veteranos e finalizada com polimento espelhado. Não vendemos folheados, não vendemos banhados — entregamos patrimônio para ser usado todo dia.",
+  title = "ESTILO QUE SE PROVA EM CADA DETALHE.",
+  body = "Na WT Joias, cada peça é cuidadosamente selecionada e acabada com banho de ouro 18k de alta qualidade, garantindo brilho duradouro e aparência premium. Modelos exclusivos com design sofisticado para quem exige o melhor.",
   diferenciais = DEFAULT_DIFERENCIAIS,
 }: Props) {
   const root = useRef<HTMLElement>(null);

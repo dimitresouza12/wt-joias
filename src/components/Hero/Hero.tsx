@@ -141,7 +141,7 @@ export default function Hero({
       </header>
 
       <div className={styles.content}>
-        <span className={styles.eyebrow}>Ouro 18k Legítimo · 750</span>
+        <span className={styles.eyebrow}>Banhado a Ouro 18k · Alta Qualidade</span>
 
         <h1 className={styles.headline} aria-label={lines.join(" ")}>
           {lines.map((line, li) => (

@@ -26,22 +26,22 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "WT Joias — Ouro 18k Legítimo",
+  title: "WT Joias — Banhado a Ouro 18k",
   description:
-    "Cordões, pulseiras, anéis e pingentes em ouro 18k legítimo (750). Peças maciças com acabamento espelhado e garantia eterna de autenticidade. Atendimento VIP via WhatsApp.",
+    "Cordões, pulseiras, anéis, pingentes e conjuntos femininos banhados a ouro 18k. Acabamento espelhado premium, modelos exclusivos. Atendimento via WhatsApp.",
   keywords: [
     "WT Joias",
-    "joias masculinas",
+    "joias banhadas a ouro",
     "ouro 18k",
-    "ouro 750",
-    "cordão de ouro",
+    "cordão banhado a ouro",
+    "conjunto feminino",
     "corrente grumet",
     "corrente cartier",
-    "pingente de ouro",
-    "pulseira de ouro",
-    "anel de ouro",
-    "dediras",
-    "joias de luxo",
+    "pingente banhado",
+    "pulseira banhada",
+    "anel banhado",
+    "joias premium",
+    "dia dos namorados joias",
   ],
 };
 
