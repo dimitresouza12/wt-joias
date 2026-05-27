@@ -1,0 +1,155 @@
+.section {
+  background: var(--surface);
+  padding: clamp(5rem, 10vw, 8rem) clamp(1.5rem, 5vw, 4rem);
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+}
+
+/* Linha dourada decorativa no topo */
+.section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: clamp(1.5rem, 5vw, 4rem);
+  width: 60px;
+  height: 2px;
+  background: var(--gold);
+  box-shadow: 0 0 18px var(--gold-glow);
+}
+
+/* halo dourado discreto no canto */
+.section::after {
+  content: "";
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, var(--gold-dim) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Cabeçalho ── */
+.header {
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+  max-width: 52ch;
+  will-change: opacity, transform;
+}
+
+.eyebrow {
+  display: block;
+  font-size: clamp(0.68rem, 0.85vw, 0.75rem);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  font-family: var(--font-body);
+}
+
+.title {
+  font-family: var(--font-title);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--white);
+  margin: 0 0 1.25rem;
+}
+
+.body {
+  font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+  color: var(--muted);
+  line-height: 1.65;
+  font-family: var(--font-body);
+  margin: 0;
+}
+
+/* ── Grid de diferenciais ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  border: 1px solid var(--border);
+  background: var(--border);
+}
+
+.card {
+  background: var(--surface2);
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+  will-change: opacity, transform;
+  transition: background 0.3s ease;
+}
+
+.card:hover {
+  background: #1e1e1e;
+}
+
+/* barra dourada no hover */
+.card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background: var(--gold);
+  transition: height 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card:hover::after {
+  height: 100%;
+}
+
+.number {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(2.8rem, 4.5vw, 3.8rem);
+  font-weight: 600;
+  color: var(--gold-dim);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  transition: color 0.35s ease;
+}
+
+.card:hover .number {
+  color: var(--gold);
+}
+
+.cardTitle {
+  font-family: var(--font-title);
+  font-size: clamp(0.95rem, 1.4vw, 1.18rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--white);
+  margin: 0;
+}
+
+.cardText {
+  font-size: clamp(0.82rem, 1.2vw, 0.92rem);
+  color: var(--muted);
+  line-height: 1.65;
+  font-family: var(--font-body);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

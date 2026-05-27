@@ -1,0 +1,276 @@
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: 640px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--white);
+  isolation: isolate;
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.78) 70%),
+    rgba(5, 5, 5, 0.55);
+  z-index: 1;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* halo dourado sutil no rodapé — sugere reflexo de ouro */
+.overlay::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background:
+    linear-gradient(to top, rgba(5, 5, 5, 0.85) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 100%, var(--gold-dim) 0%, transparent 55%);
+}
+
+/* ── HUD ── */
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: clamp(1.25rem, 2.4vw, 1.85rem) clamp(1.5rem, 4vw, 3rem);
+  will-change: transform, opacity;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  line-height: 1;
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.logoImg {
+  width: clamp(58px, 6.5vw, 84px);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 14px rgba(201, 162, 76, 0.35));
+  transition: filter 0.4s ease;
+}
+
+.logo:hover .logoImg {
+  filter: drop-shadow(0 0 22px rgba(201, 162, 76, 0.6));
+}
+
+.nav {
+  display: flex;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.navLink {
+  font-size: clamp(0.68rem, 0.85vw, 0.78rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+  transition: color 0.25s ease;
+  font-family: var(--font-body);
+}
+
+.navLink:hover {
+  color: var(--gold);
+}
+
+/* ── Conteúdo central ── */
+.content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: clamp(7rem, 17svh, 10rem) clamp(1.5rem, 5vw, 4rem) clamp(4rem, 8svh, 6rem);
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: clamp(0.65rem, 0.85vw, 0.78rem);
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--gold-dim);
+  border-radius: 999px;
+  margin-bottom: clamp(1.4rem, 2.5vw, 2rem);
+  background: rgba(201, 162, 76, 0.04);
+}
+
+.headline {
+  font-family: var(--font-title);
+  font-size: clamp(2.1rem, 4.6vw, 4.8rem);
+  font-weight: 800;
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 0;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+
+.wordWrap {
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.06em 0.04em 0.1em;
+  margin-right: 0.14em;
+  vertical-align: top;
+}
+
+.word {
+  display: inline-block;
+  transform: translateZ(0);
+  will-change: clip-path;
+  clip-path: inset(100% 0 0 0);
+}
+
+/* Linha dourada — destaque "SUA MARCA REGISTRADA" (gradiente aplicado por palavra) */
+.gold .word {
+  background: linear-gradient(180deg, var(--gold-soft) 0%, var(--gold) 55%, #a8853a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.sub {
+  margin-top: clamp(1.25rem, 2.5vw, 1.85rem);
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.58);
+  max-width: 48ch;
+  letter-spacing: 0.01em;
+  line-height: 1.62;
+  will-change: transform, opacity;
+  font-family: var(--font-body);
+}
+
+/* ── CTA Principal — borda dourada iluminada ── */
+.cta {
+  --cta-glow: 0.35;
+  margin-top: clamp(1.85rem, 3vw, 2.5rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid var(--gold);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: clamp(0.72rem, 1vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  will-change: opacity, transform;
+  transition: color 0.35s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+  box-shadow:
+    0 0 calc(28px * var(--cta-glow)) rgba(201, 162, 76, calc(0.45 * var(--cta-glow))),
+    inset 0 0 0 1px rgba(201, 162, 76, calc(0.2 * var(--cta-glow)));
+}
+
+/* preenchimento dourado no hover */
+.cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--gold-soft) 0%, var(--gold) 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 0;
+}
+
+.cta:hover {
+  color: #050505;
+  border-color: var(--gold-soft);
+  box-shadow:
+    0 0 32px rgba(201, 162, 76, 0.55),
+    0 8px 28px rgba(201, 162, 76, 0.25);
+}
+
+.cta:hover::before {
+  transform: scaleX(1);
+}
+
+.ctaInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ctaArrow {
+  font-size: 1.05rem;
+  line-height: 1;
+  transition: transform 0.3s ease;
+}
+
+.cta:hover .ctaArrow {
+  transform: translateX(6px);
+}
+
+/* ── Scroll indicator ── */
+.scroll {
+  position: absolute;
+  bottom: clamp(1.5rem, 3vw, 2.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  will-change: opacity;
+}
+
+.scrollText {
+  font-size: 0.62rem;
+  letter-spacing: 0.48em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-body);
+}
+
+.scrollLine {
+  width: 1px;
+  height: 56px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  opacity: 0.6;
+  transform-origin: top center;
+}
+
+@media (max-width: 640px) {
+  /* Nav decorativo escondido no mobile — botão flutuante do WhatsApp assume */
+  .nav { display: none; }
+  .scrollLine { height: 40px; }
+  .headline { font-size: clamp(1.9rem, 9vw, 2.8rem); }
+  .eyebrow { font-size: 0.6rem; letter-spacing: 0.32em; padding: 0.45rem 0.85rem; }
+}

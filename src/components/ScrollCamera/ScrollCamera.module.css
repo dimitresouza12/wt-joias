@@ -1,0 +1,338 @@
+.section {
+  position: relative;
+  height: 300vh;
+  background: var(--bg);
+}
+
+.anchor {
+  position: absolute;
+  top: 190vh;
+  left: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  transform: translateZ(0);
+}
+
+/* ── Título de fundo (parallax) ── */
+.title {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+.titleText {
+  font-family: var(--font-title);
+  font-size: clamp(3.5rem, 9vw, 7rem);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(201, 162, 76, 0.05);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* ── Grid de cards ── */
+.cards {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.card {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 2px;
+  will-change: transform, opacity;
+  pointer-events: all;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+.cardBadge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 2;
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(201, 162, 76, 0.35);
+  padding: 0.3rem 0.65rem;
+  backdrop-filter: blur(4px);
+}
+
+.card1 {
+  width: clamp(220px, 26vw, 360px);
+  height: clamp(300px, 36vw, 480px);
+  left: clamp(2rem, 6vw, 7rem);
+  top: 50%;
+  transform: translateY(-54%);
+}
+
+.card2 {
+  width: clamp(200px, 22vw, 320px);
+  height: clamp(270px, 32vw, 440px);
+  left: 50%;
+  top: 50%;
+}
+
+.card3 {
+  width: clamp(220px, 26vw, 360px);
+  height: clamp(300px, 36vw, 480px);
+  right: clamp(2rem, 6vw, 7rem);
+  top: 50%;
+  transform: translateY(-46%);
+}
+
+.cardImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.82) contrast(1.1);
+  transition: filter 0.5s ease;
+}
+
+.card:hover .cardImg {
+  filter: brightness(1.05) contrast(1.12);
+}
+
+.cardMeta {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: clamp(1rem, 1.8vw, 1.5rem);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.cardLabel {
+  font-family: var(--font-body);
+  font-size: clamp(0.6rem, 0.75vw, 0.68rem);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.cardName {
+  font-family: var(--font-title);
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--white);
+}
+
+.cardDesc {
+  font-family: var(--font-body);
+  font-size: clamp(0.72rem, 0.9vw, 0.8rem);
+  color: rgba(255, 255, 255, 0.62);
+  line-height: 1.45;
+  margin-top: 0.15rem;
+}
+
+.cardCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid rgba(201, 162, 76, 0.55);
+  color: var(--gold);
+  font-family: var(--font-body);
+  font-size: clamp(0.6rem, 0.75vw, 0.68rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
+  pointer-events: all;
+  z-index: 3;
+}
+
+.cardCta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 0;
+}
+
+.cardCta:hover {
+  color: #000;
+  border-color: var(--gold);
+}
+
+.cardCta:hover::before {
+  transform: scaleX(1);
+}
+
+.cardCtaText {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Card CTA only (sem foto) ── */
+.cardCtaOnly {
+  background: var(--surface2);
+  border: 1px solid rgba(201, 162, 76, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ctaCardInner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: clamp(1.5rem, 2.5vw, 2.25rem);
+  width: 100%;
+}
+
+.ctaCardEyebrow {
+  font-family: var(--font-body);
+  font-size: clamp(0.6rem, 0.75vw, 0.68rem);
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.ctaCardTitle {
+  font-family: var(--font-title);
+  font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--white);
+  line-height: 1.1;
+}
+
+.ctaCardDesc {
+  font-family: var(--font-body);
+  font-size: clamp(0.75rem, 0.95vw, 0.85rem);
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 0.25rem;
+}
+
+.ctaCardBtn {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  padding: 0.7rem 1.2rem;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: clamp(0.6rem, 0.78vw, 0.7rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s ease;
+  cursor: pointer;
+  pointer-events: all;
+  z-index: 3;
+}
+
+.ctaCardBtn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 0;
+}
+
+.ctaCardBtn:hover { color: #000; }
+.ctaCardBtn:hover::before { transform: scaleX(1); }
+
+.ctaCardBtnInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .cardCta {
+    font-size: 0.7rem;
+    padding: 0.65rem 1rem;
+  }
+  .section {
+    height: auto;
+    padding: clamp(4rem, 8vw, 6rem) clamp(1.25rem, 4vw, 2rem);
+    background: var(--bg);
+  }
+
+  .sticky {
+    position: relative;
+    height: auto;
+    flex-direction: column;
+    gap: 1.5rem;
+    overflow: visible;
+    transform: none;
+  }
+
+  .title {
+    display: none;
+  }
+
+  .cards {
+    position: relative;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .card,
+  .card1,
+  .card2,
+  .card3 {
+    position: relative;
+    width: 100%;
+    height: clamp(300px, 80vw, 380px);
+    top: auto;
+    left: auto;
+    right: auto;
+    transform: none;
+  }
+}

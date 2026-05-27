@@ -1,0 +1,157 @@
+.section {
+  background: #050505;
+  padding: clamp(5rem, 10vw, 8rem) clamp(1.5rem, 5vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Halo dourado de palco */
+.section::before {
+  content: "";
+  position: absolute;
+  top: -35%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70vw;
+  height: 70vw;
+  max-width: 700px;
+  max-height: 700px;
+  background: radial-gradient(
+    circle,
+    rgba(201, 162, 76, 0.1) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+/* Linha dourada decorativa */
+.section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: var(--gold);
+  box-shadow: 0 0 18px var(--gold-glow);
+}
+
+.eyebrow {
+  font-size: clamp(0.68rem, 0.9vw, 0.78rem);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+  will-change: opacity, transform;
+  font-family: var(--font-body);
+  position: relative;
+}
+
+.headline {
+  font-family: var(--font-title);
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1.02;
+  text-wrap: balance;
+  margin: 0 0 1rem;
+  max-width: 18ch;
+  will-change: opacity, transform;
+  position: relative;
+}
+
+.sub {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.55);
+  max-width: 42ch;
+  line-height: 1.6;
+  margin: 0 0 clamp(2rem, 4vw, 3rem);
+  will-change: opacity, transform;
+  position: relative;
+}
+
+/* ── Botão WhatsApp ── */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: linear-gradient(180deg, var(--gold-soft) 0%, var(--gold) 100%);
+  color: #050505;
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1.1rem clamp(1.75rem, 3vw, 2.5rem);
+  border-radius: 2px;
+  will-change: opacity, transform;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.4s ease;
+  box-shadow:
+    0 0 30px rgba(201, 162, 76, 0.35),
+    0 14px 38px rgba(201, 162, 76, 0.22);
+}
+
+.cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background 0.25s ease;
+}
+
+.cta:hover {
+  box-shadow:
+    0 0 42px rgba(201, 162, 76, 0.55),
+    0 18px 48px rgba(201, 162, 76, 0.32);
+}
+
+.cta:hover::before {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cta:active {
+  transform: scale(0.98);
+}
+
+.ctaIcon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.ctaIcon svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  fill: #050505;
+}
+
+.phone {
+  margin-top: 1.5rem;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  will-change: opacity;
+  position: relative;
+}
+
+@media (max-width: 480px) {
+  .cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
