@@ -167,10 +167,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
-  text-decoration: none;
   color: inherit;
   will-change: opacity, transform;
-  cursor: pointer;
 }
 
 .itemImgWrap {
@@ -181,6 +179,46 @@
   border: 1px solid var(--border);
   border-radius: 2px;
   transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+/* Link que cobre a foto inteira para abrir WhatsApp */
+.itemLink {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Botão expand — fica acima do link */
+.expandBtn {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 5, 5, 0.62);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(201, 162, 76, 0.3);
+  border-radius: 3px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.itemImgWrap:hover .expandBtn {
+  opacity: 1;
+}
+
+.expandBtn:hover {
+  background: rgba(5, 5, 5, 0.88);
+  color: var(--gold);
+  border-color: var(--gold);
 }
 
 .itemImg {
@@ -342,4 +380,60 @@
     padding: 0.35rem 0.65rem;
     letter-spacing: 0.16em;
   }
+}
+
+/* Expand sempre visível no touch */
+@media (hover: none) {
+  .expandBtn { opacity: 1; }
+}
+
+/* ── Lightbox ─────────────────────────────────────────────────────── */
+.lightboxOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  background: rgba(0, 0, 0, 0.93);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+}
+
+.lightboxImgWrap {
+  position: relative;
+  width: min(90vw, 90svh);
+  height: min(90vw, 90svh);
+  max-width: 860px;
+  max-height: 860px;
+  cursor: default;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 5, 5, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  z-index: 1;
+}
+
+.lightboxClose:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgba(5, 5, 5, 0.9);
 }
