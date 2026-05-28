@@ -21,7 +21,7 @@ const MSG_CONSULTOR   = enc("Olá! Acessei o site da WT Joias e gostaria de fala
 const MSG_PROMO       = enc("Olá! Vi a promoção de Dia dos Namorados no site da WT Joias. Quero aproveitar os descontos especiais nos conjuntos femininos e kits masculinos. Podem me mostrar o que está disponível? #PromoNamorados");
 
 const cotar = (nome: string, tag: string) =>
-  WA_BASE + enc(`Olá! Vi no site da WT Joias a peça "${nome}" banhada a ouro 18k e gostaria de saber se está disponível e o valor. ${tag}`);
+  WA_BASE + enc(`Olá! Vi no site da WT Joias a peça '${nome}' banhada a ouro 18k e gostaria de saber se está disponível e o valor. ${tag}`);
 
 // ── helpers para gerar itens de catálogo ─────────────────────────────
 
