@@ -12,7 +12,6 @@ if (typeof window !== "undefined") {
 
 const VIDEOS = [
   "/pecas-video/video-01.mp4",
-  "/pecas-video/video-02.mp4",
   "/pecas-video/video-03.mp4",
   "/pecas-video/video-04.mp4",
   "/pecas-video/video-05.mp4",
