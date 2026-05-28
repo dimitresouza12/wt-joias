@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 import styles from "./PromoNamorados.module.css";
 
 if (typeof window !== "undefined") {
@@ -33,7 +34,7 @@ const HEARTS = [
   { top: "82%", left: "50%", fontSize: 13, opacity: 0.09, delay: 1.1, dy: 7,  dur: 3.0 },
 ];
 
-function PromoCard({ peca, phone, igHandle }: { peca: Peca; phone: string; igHandle: string }) {
+function PromoCard({ peca, phone, igHandle, priority = false }: { peca: Peca; phone: string; igHandle: string; priority?: boolean }) {
   const [open, setOpen] = useState(false);
   const waHref = `https://wa.me/${phone}?text=${encodeURIComponent(peca.waMsg)}`;
   const igHref = igHandle ? `https://ig.me/m/${igHandle}` : "";
@@ -48,8 +49,15 @@ function PromoCard({ peca, phone, igHandle }: { peca: Peca; phone: string; igHan
         aria-label={`Comprar ${peca.name}`}
         onKeyDown={(e) => e.key === "Enter" && setOpen(true)}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={peca.src} alt={peca.name} className={styles.img} loading="lazy" />
+        <Image
+          src={peca.src}
+          alt={peca.name}
+          fill
+          sizes="(max-width: 700px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          className={styles.img}
+          style={{ objectFit: "cover" }}
+          priority={priority}
+        />
         <span className={styles.offBadge}>-20%</span>
         <div className={styles.imgHint} aria-hidden>
           <span className={styles.hintHeart}>♥</span>
@@ -257,7 +265,7 @@ export default function PromoNamorados({ phone, igHandle = "" }: Props) {
         </div>
         <div className={`${styles.grid} ${styles.grid4}`}>
           {femininos.map((p, i) => (
-            <PromoCard key={`f-${i}`} peca={p} phone={phone} igHandle={igHandle} />
+            <PromoCard key={`f-${i}`} peca={p} phone={phone} igHandle={igHandle} priority={i < 2} />
           ))}
         </div>
 
@@ -269,7 +277,7 @@ export default function PromoNamorados({ phone, igHandle = "" }: Props) {
         </div>
         <div className={`${styles.grid} ${styles.grid3}`}>
           {masculinos.map((p, i) => (
-            <PromoCard key={`m-${i}`} peca={p} phone={phone} igHandle={igHandle} />
+            <PromoCard key={`m-${i}`} peca={p} phone={phone} igHandle={igHandle} priority={i === 0} />
           ))}
         </div>
 

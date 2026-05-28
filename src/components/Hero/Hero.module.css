@@ -46,11 +46,11 @@
 
 /* ── HUD ── */
 .hud {
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: var(--banner-h, 46px); /* segue banner — 0px quando fechado */
   left: 0;
   right: 0;
-  z-index: 4;
+  z-index: 400;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -267,9 +267,184 @@
   transform-origin: top center;
 }
 
+/* ── Hambúrguer ── */
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  z-index: 500;
+  position: relative;
+}
+
+.burger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 2px;
+  transition: transform 0.35s ease, opacity 0.35s ease, background 0.3s ease;
+  transform-origin: center;
+}
+
+.burger:hover span { background: var(--gold); }
+.burgerOpen span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burgerOpen span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.burgerOpen span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Backdrop ── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 440;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+/* ── Drawer lateral ── */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(300px, 84vw);
+  z-index: 450;
+  background: #080808;
+  border-left: 1px solid rgba(201, 162, 76, 0.12);
+  display: flex;
+  flex-direction: column;
+  padding: 6.5rem 0 2rem; /* espaço para banner 46px + HUD + close btn */
+  overflow-y: auto;
+  will-change: transform;
+}
+
+.drawer::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.drawerClose {
+  position: absolute;
+  top: 56px; /* abaixo da AnuncioBanner (46px) + margem */
+  right: 1.25rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.6rem;
+  transition: color 0.25s ease;
+  font-family: var(--font-body);
+}
+.drawerClose:hover { color: var(--gold); }
+
+/* ── Nav dentro do drawer ── */
+.drawerNav {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.75rem;
+}
+
+.drawerItem {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.drawerItem:first-child {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Link simples */
+.drawerLink {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 0;
+  font-family: var(--font-title);
+  font-size: clamp(1rem, 4.5vw, 1.2rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.drawerLink:active { color: var(--gold); }
+
+/* Botão com sub-itens */
+.drawerLinkBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem 0;
+  font-family: var(--font-title);
+  font-size: clamp(1rem, 4.5vw, 1.2rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.2s ease;
+}
+.drawerLinkBtn:active { color: var(--gold); }
+
+/* Chevron */
+.chevron {
+  font-size: 1.3rem;
+  line-height: 1;
+  color: rgba(201, 162, 76, 0.5);
+  display: inline-block;
+  transition: transform 0.35s ease, color 0.2s ease;
+  transform-origin: center;
+  flex-shrink: 0;
+}
+
+.chevronOpen {
+  transform: rotate(90deg);
+  color: var(--gold);
+}
+
+/* Sub-itens */
+.drawerSub {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0.5rem;
+}
+
+.drawerSubLink {
+  padding: 0.85rem 0 0.85rem 1rem; /* touch target ≥44px */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  border-left: 1px solid rgba(201, 162, 76, 0.18);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.drawerSubLink:active {
+  color: var(--gold);
+  border-left-color: var(--gold);
+}
+
 @media (max-width: 640px) {
-  /* Nav decorativo escondido no mobile — botão flutuante do WhatsApp assume */
   .nav { display: none; }
+  .burger { display: flex; }
   .scrollLine { height: 40px; }
   .headline { font-size: clamp(1.9rem, 9vw, 2.8rem); }
   .eyebrow { font-size: 0.6rem; letter-spacing: 0.32em; padding: 0.45rem 0.85rem; }

@@ -185,7 +185,16 @@ export default function Page() {
         ctaHref={WA_BASE + MSG_CATALOGO}
         navLinks={[
           { label: "Coleção",   href: "#colecao"   },
-          { label: "Catálogo",  href: "#catalogo"  },
+          {
+            label: "Catálogo",
+            href:  "#catalogo",
+            sub: [
+              { label: "Correntes",  href: "#catalogo-correntes-2mm"   },
+              { label: "Pingentes",  href: "#catalogo-pingentes-p"     },
+              { label: "Pulseiras",  href: "#catalogo-pulseiras-finas" },
+              { label: "Braceletes", href: "#catalogo-braceletes"      },
+            ],
+          },
           { label: "Conceito",  href: "#conceito"  },
           { label: "Cotar",     href: "#consultor" },
         ]}
@@ -260,7 +269,7 @@ export default function Page() {
       {/* 07 — CTA Final */}
       <WhatsAppCTA
         phone={WA_PHONE}
-        message={decodeURIComponent(MSG_CONSULTOR)}
+        message="Olá! Acessei o site da WT Joias e gostaria de falar com um consultor para ver as peças banhadas a ouro 18k disponíveis."
         eyebrow="Pronto para encomendar?"
         headline="FALE COM UM CONSULTOR"
         sub="Nossa equipe envia o catálogo do dia, fotos reais das peças disponíveis e todas as informações sobre os modelos banhados a ouro 18k. Atendimento rápido e discreto pelo WhatsApp."
@@ -269,7 +278,7 @@ export default function Page() {
       {/* Botão flutuante */}
       <WhatsAppButton
         phone={WA_PHONE}
-        message={decodeURIComponent(MSG_CONSULTOR)}
+        message="Olá! Acessei o site da WT Joias e gostaria de falar com um consultor para ver as peças banhadas a ouro 18k disponíveis."
       />
     </main>
   );

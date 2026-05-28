@@ -25,8 +25,10 @@ export default function LenisProvider({ children }: Props) {
     /* Lenis alimenta o ScrollTrigger a cada tick */
     lenis.on("scroll", ScrollTrigger.update);
 
-    /* Expõe a instância para scripts (gravação de vídeo, debug) */
-    (window as unknown as { lenis: typeof lenis }).lenis = lenis;
+    /* Expõe a instância apenas em desenvolvimento (gravação de vídeo, debug) */
+    if (process.env.NODE_ENV !== "production") {
+      (window as unknown as { lenis: typeof lenis }).lenis = lenis;
+    }
 
     const tickerCb = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(tickerCb);

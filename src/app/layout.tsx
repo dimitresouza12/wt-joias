@@ -8,6 +8,7 @@ const syne = Syne({
   variable: "--font-syne",
   weight: ["400", "600", "700", "800"],
   display: "swap",
+  adjustFontFallback: true,
 });
 
 const inter = Inter({
@@ -15,6 +16,7 @@ const inter = Inter({
   variable: "--font-inter",
   weight: ["400", "500", "600", "700"],
   display: "swap",
+  adjustFontFallback: true,
 });
 
 const cormorant = Cormorant_Garamond({
@@ -22,11 +24,12 @@ const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  display: "swap",
+  display: "optional", // decorativo — sem CLS crítico
 });
 
 export const metadata: Metadata = {
   title: "WT Joias — Banhado a Ouro 18k",
+  themeColor: "#050505",
   description:
     "Cordões, pulseiras, anéis, pingentes e conjuntos femininos banhados a ouro 18k. Acabamento espelhado premium, modelos exclusivos. Atendimento via WhatsApp.",
   keywords: [

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,7 +11,8 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(useGSAP, ScrollTrigger);
 }
 
-type NavLink = { label: string; href: string };
+type SubLink = { label: string; href: string };
+type NavLink = { label: string; href: string; sub?: SubLink[] };
 
 type HeroProps = {
   videoSrc: string;
@@ -37,8 +38,104 @@ export default function Hero({
     { label: "Cotar",    href: "#consultor" },
   ],
 }: HeroProps) {
-  const root = useRef<HTMLElement>(null);
+  const root        = useRef<HTMLElement>(null);
+  const drawerRef   = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const burgerRef   = useRef<HTMLButtonElement>(null);
+  const subRefs     = useRef<Record<string, HTMLDivElement | null>>({});
+  const prevAccordion = useRef<string | null>(null);
+  const mountedDrawer = useRef(false);
+  const mountedAccordion = useRef(false);
 
+  const [drawerOpen, setDrawerOpen]       = useState(false);
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
+
+  /* Burger: native listener → state */
+  useEffect(() => {
+    const burger = burgerRef.current;
+    if (!burger) return;
+    const handleClick = () => setDrawerOpen((v) => !v);
+    burger.addEventListener("click", handleClick);
+    return () => burger.removeEventListener("click", handleClick);
+  }, []);
+
+  /* Burger visual (X icon) */
+  useEffect(() => {
+    const burger = burgerRef.current;
+    if (!burger) return;
+    if (drawerOpen) burger.classList.add(styles.burgerOpen);
+    else burger.classList.remove(styles.burgerOpen);
+  }, [drawerOpen, styles.burgerOpen]);
+
+  /* Drawer GSAP — skip first render */
+  useEffect(() => {
+    const drawer   = drawerRef.current;
+    const backdrop = backdropRef.current;
+    if (!drawer || !backdrop) return;
+
+    if (!mountedDrawer.current) {
+      mountedDrawer.current = true;
+      return;
+    }
+
+    if (drawerOpen) {
+      drawer.style.display   = "flex";
+      backdrop.style.display = "block";
+      gsap.fromTo(backdrop, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power3.out" });
+      gsap.fromTo(drawer,   { x: 320 },     { x: 0,   duration: 0.45, ease: "power3.out" });
+    } else {
+      gsap.to(backdrop, {
+        opacity: 0, duration: 0.3, ease: "power3.in",
+        onComplete: () => { if (backdrop) backdrop.style.display = "none"; },
+      });
+      gsap.to(drawer, {
+        x: 320, duration: 0.38, ease: "power3.in",
+        onComplete: () => { if (drawer) drawer.style.display = "none"; },
+      });
+    }
+  }, [drawerOpen]);
+
+  /* Accordion GSAP — skip first render */
+  useEffect(() => {
+    if (!mountedAccordion.current) {
+      mountedAccordion.current = true;
+      return;
+    }
+
+    // Fecha anterior
+    const prev = prevAccordion.current;
+    if (prev && prev !== openAccordion) {
+      const el = subRefs.current[prev];
+      if (el) {
+        gsap.to(el, {
+          height: 0, opacity: 0, duration: 0.3, ease: "power3.in",
+          onComplete: () => { el.style.visibility = "hidden"; },
+        });
+      }
+    }
+
+    // Abre novo
+    if (openAccordion) {
+      const el = subRefs.current[openAccordion];
+      if (el) {
+        el.style.visibility = "visible";
+        const h = el.scrollHeight;
+        gsap.fromTo(el,
+          { height: 0, opacity: 0 },
+          { height: h, opacity: 1, duration: 0.42, ease: "power3.out" },
+        );
+      }
+    }
+
+    prevAccordion.current = openAccordion;
+  }, [openAccordion]);
+
+  const closeDrawer = useCallback(() => {
+    setDrawerOpen(false);
+    setOpenAccordion(null);
+  }, []);
+
+  /* ── GSAP hero entrance ── */
   useGSAP(
     () => {
       const scope = root.current;
@@ -129,16 +226,73 @@ export default function Hero({
             alt="WT Joias"
             width={680}
             height={680}
+            sizes="(max-width: 640px) 58px, 84px"
             className={styles.logoImg}
             priority
           />
         </a>
+
         <nav className={styles.nav}>
           {navLinks.map((l) => (
             <a key={l.href} className={styles.navLink} href={l.href}>{l.label}</a>
           ))}
         </nav>
+
+        <button ref={burgerRef} className={styles.burger} aria-label="Menu">
+          <span /><span /><span />
+        </button>
       </header>
+
+      {/* Backdrop */}
+      <div
+        ref={backdropRef}
+        className={styles.backdrop}
+        style={{ display: "none" }}
+        onClick={closeDrawer}
+      />
+
+      {/* Drawer lateral */}
+      <div ref={drawerRef} className={styles.drawer} style={{ display: "none" }}>
+        <button className={styles.drawerClose} onClick={closeDrawer} aria-label="Fechar menu">
+          ✕
+        </button>
+
+        <nav className={styles.drawerNav}>
+          {navLinks.map((link) => (
+            <div key={link.href} className={styles.drawerItem}>
+              {link.sub ? (
+                <>
+                  <button
+                    className={styles.drawerLinkBtn}
+                    onClick={() => setOpenAccordion((p) => p === link.label ? null : link.label)}
+                    aria-expanded={openAccordion === link.label}
+                  >
+                    <span>{link.label}</span>
+                    <span className={`${styles.chevron} ${openAccordion === link.label ? styles.chevronOpen : ""}`}>
+                      ›
+                    </span>
+                  </button>
+                  <div
+                    ref={(el) => { subRefs.current[link.label] = el; }}
+                    className={styles.drawerSub}
+                    style={{ visibility: "hidden", height: 0, overflow: "hidden" }}
+                  >
+                    {link.sub.map((s) => (
+                      <a key={s.href} href={s.href} className={styles.drawerSubLink} onClick={closeDrawer}>
+                        {s.label}
+                      </a>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <a href={link.href} className={styles.drawerLink} onClick={closeDrawer}>
+                  {link.label}
+                </a>
+              )}
+            </div>
+          ))}
+        </nav>
+      </div>
 
       <div className={styles.content}>
         <span className={styles.eyebrow}>Banhado a Ouro 18k · Alta Qualidade</span>

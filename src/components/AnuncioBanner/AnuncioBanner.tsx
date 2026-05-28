@@ -35,7 +35,11 @@ export default function AnuncioBanner({ ctaHref }: Props) {
       opacity: 0,
       duration: 0.5,
       ease: "power3.in",
-      onComplete: () => setGone(true),
+      onComplete: () => {
+        // Zera a variável CSS para HUD e filterBar se ajustarem
+        document.documentElement.style.setProperty("--banner-h", "0px");
+        setGone(true);
+      },
     });
   }, []);
 

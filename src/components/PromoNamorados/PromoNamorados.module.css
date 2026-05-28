@@ -41,6 +41,7 @@
 .header {
   text-align: center;
   margin-bottom: 56px;
+  width: 100%; /* impede overflow em flex container */
 }
 
 .badge {
@@ -250,12 +251,18 @@
 
 .closeContact {
   position: absolute;
-  top: 9px;
-  right: 11px;
-  font-size: 0.7rem;
+  top: 4px;
+  right: 4px;
+  font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.38);
   transition: color 0.18s;
-  padding: 4px;
+  /* touch target 44×44px mínimo */
+  padding: 12px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
   letter-spacing: 0;
 }
@@ -387,6 +394,11 @@
 .ctaInner { display: flex; align-items: center; gap: 10px; }
 .ctaArrow { font-size: 1rem; }
 
+/* Em touch devices sem hover: mostra hint permanentemente */
+@media (hover: none) {
+  .imgHint { opacity: 1; }
+}
+
 /* ── responsive ── */
 @media (max-width: 1024px) {
   .grid3 { grid-template-columns: repeat(3, 1fr); }
@@ -394,12 +406,13 @@
 }
 
 @media (max-width: 700px) {
-  .section { padding: 80px 14px 80px; }
-  .header  { margin-bottom: 40px; }
+  .section  { padding: 72px 18px 72px; }
+  .header   { margin-bottom: 40px; }
+  .badge    { font-size: 0.52rem; letter-spacing: 0.12em; padding: 5px 12px; }
+  .headline { font-size: clamp(1.45rem, 7vw, 1.75rem); }
   .grid4,
-  .grid3   { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 36px; }
-  .pill    { padding: 14px 24px; }
-  .headline { font-size: 2.2rem; }
-  .cta     { font-size: 0.68rem; padding: 13px 18px; letter-spacing: 0.12em; }
+  .grid3    { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 36px; }
+  .pill     { padding: 14px 24px; }
+  .cta      { font-size: 0.68rem; padding: 13px 18px; letter-spacing: 0.12em; }
   .subHeadLabel { font-size: 0.8rem; }
 }

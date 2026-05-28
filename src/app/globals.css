@@ -1,5 +1,6 @@
 /* ── Variáveis globais — WT Joias ─────────────────────────────────── */
 :root {
+  --banner-h:  46px; /* atualizado para 0px via JS quando banner é fechado */
   --bg:        #050505;
   --surface:   #121212;
   --surface2:  #1a1a1a;

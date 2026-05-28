@@ -12,7 +12,6 @@ if (typeof window !== "undefined") {
 
 const VIDEOS = [
   "/pecas-video/video-01.mp4",
-  "/pecas-video/video-02.mp4",
   "/pecas-video/video-03.mp4",
   "/pecas-video/video-04.mp4",
   "/pecas-video/video-05.mp4",
@@ -35,17 +34,19 @@ export default function VideoGaleria() {
         scrollTrigger: { trigger: section, start: "top 80%", toggleActions: "play none none none" },
       });
 
+      // set ANTES do batch — senão elementos já em viewport disparam onEnter antes de serem ocultados
+      gsap.set(items, { opacity: 0, y: 44 });
+
       ScrollTrigger.batch(Array.from(items), {
         start: "top 88%",
         onEnter: (batch) =>
           gsap.to(batch, {
             opacity: 1, y: 0, duration: 0.75, stagger: 0.1,
             ease: "power3.out", force3D: true,
+            onComplete: () => gsap.set(batch, { clearProps: "will-change" }),
           }),
         once: true,
       });
-
-      gsap.set(items, { opacity: 0, y: 44 });
     },
     { scope: root },
   );

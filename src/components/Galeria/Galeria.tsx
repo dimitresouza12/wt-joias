@@ -26,6 +26,7 @@ export type Categoria = {
   description: string;
   group?: string;
   pecas: Peca[];
+  initialCount?: number;
 };
 
 type Props = {
@@ -63,7 +64,8 @@ export default function Galeria({
     : categorias.filter((c) => c.group === activeGroup);
 
   useEffect(() => {
-    ScrollTrigger.refresh();
+    const id = requestAnimationFrame(() => ScrollTrigger.refresh());
+    return () => cancelAnimationFrame(id);
   }, [activeGroup]);
 
   useGSAP(
@@ -106,29 +108,37 @@ export default function Galeria({
         )}
 
         {visible.map((cat) => (
-          <CategoryBlock key={cat.id} cat={cat} />
+          <CategoryBlock key={cat.id} cat={cat} initialCount={cat.initialCount ?? 8} />
         ))}
       </div>
     </section>
   );
 }
 
-function CategoryBlock({ cat }: { cat: Categoria }) {
+function CategoryBlock({ cat, initialCount }: { cat: Categoria; initialCount: number }) {
   const blockRef = useRef<HTMLDivElement>(null);
+  const extraRef = useRef<HTMLDivElement>(null);
+  const [expanded, setExpanded] = useState(false);
 
+  const initialPecas = cat.pecas.slice(0, initialCount);
+  const extraPecas = cat.pecas.slice(initialCount);
+  const hasMore = extraPecas.length > 0;
+
+  /* Animação de entrada dos itens iniciais */
   useGSAP(
     () => {
       const block = blockRef.current;
       if (!block) return;
 
       const blockHeader = block.querySelector<HTMLElement>(`.${styles.blockHeader}`);
-      const items = block.querySelectorAll<HTMLElement>(`.${styles.item}`);
+      const items = block.querySelectorAll<HTMLElement>(`.${styles.initialGrid} .${styles.item}`);
 
       gsap.set(blockHeader, { opacity: 0, y: 32 });
       gsap.set(items, { opacity: 0, y: 40 });
 
       gsap.to(blockHeader, {
         opacity: 1, y: 0, duration: 0.8, ease: "power3.out", force3D: true,
+        onComplete: () => gsap.set(blockHeader, { clearProps: "will-change" }),
         scrollTrigger: { trigger: block, start: "top 78%", toggleActions: "play none none none" },
       });
 
@@ -138,12 +148,26 @@ function CategoryBlock({ cat }: { cat: Categoria }) {
           gsap.to(batch, {
             opacity: 1, y: 0, duration: 0.75, stagger: 0.08,
             ease: "power3.out", force3D: true,
+            onComplete: () => gsap.set(batch, { clearProps: "will-change" }),
           }),
         once: true,
       });
     },
     { scope: blockRef },
   );
+
+  /* Animação dos itens extras ao expandir */
+  useEffect(() => {
+    if (!expanded || !extraRef.current) return;
+    const items = extraRef.current.querySelectorAll<HTMLElement>(`.${styles.item}`);
+    gsap.fromTo(
+      items,
+      { opacity: 0, y: 44 },
+      { opacity: 1, y: 0, duration: 0.75, stagger: 0.07, ease: "power3.out", force3D: true,
+        onComplete: () => ScrollTrigger.refresh(),
+      }
+    );
+  }, [expanded]);
 
   return (
     <div ref={blockRef} id={cat.id} className={styles.block}>
@@ -153,35 +177,65 @@ function CategoryBlock({ cat }: { cat: Categoria }) {
         <p className={styles.blockDesc}>{cat.description}</p>
       </div>
 
-      <div className={styles.grid}>
-        {cat.pecas.map((p, i) => (
-          <a
-            key={`${cat.id}-${i}`}
-            href={p.ctaHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.item}
-          >
-            <div className={styles.itemImgWrap}>
-              <Image
-                src={p.src}
-                alt={p.alt}
-                fill
-                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                className={styles.itemImg}
-                style={{ objectFit: "cover" }}
-              />
-              <div className={styles.itemOverlay}>
-                <span className={styles.itemOverlayText}>Cotar no WhatsApp →</span>
-              </div>
-            </div>
-            <div className={styles.itemMeta}>
-              <span className={styles.itemName}>{p.name}</span>
-              {p.detail && <span className={styles.itemDetail}>{p.detail}</span>}
-            </div>
-          </a>
+      {/* Itens iniciais */}
+      <div className={`${styles.grid} ${styles.initialGrid}`}>
+        {initialPecas.map((p, i) => (
+          <PecaCard key={`${cat.id}-init-${i}`} p={p} catId={cat.id} />
         ))}
       </div>
+
+      {/* Itens extras — só renderiza após expandir */}
+      {expanded && extraPecas.length > 0 && (
+        <div ref={extraRef} className={`${styles.grid} ${styles.extraGrid}`}>
+          {extraPecas.map((p, i) => (
+            <PecaCard key={`${cat.id}-extra-${i}`} p={p} catId={cat.id} />
+          ))}
+        </div>
+      )}
+
+      {/* Botão ver mais / ver menos */}
+      {hasMore && (
+        <div className={styles.verMaisWrap}>
+          <button
+            className={styles.verMaisBtn}
+            onClick={() => setExpanded((v) => !v)}
+          >
+            {expanded
+              ? "Ver menos"
+              : `Ver mais ${extraPecas.length} opções disponíveis`}
+            <span className={`${styles.verMaisArrow} ${expanded ? styles.arrowUp : ""}`}>↓</span>
+          </button>
+        </div>
+      )}
     </div>
+  );
+}
+
+function PecaCard({ p, catId }: { p: Peca; catId: string }) {
+  return (
+    <a
+      href={p.ctaHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={styles.item}
+    >
+      <div className={styles.itemImgWrap}>
+        <Image
+          src={p.src}
+          alt={p.alt}
+          fill
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+          className={styles.itemImg}
+          style={{ objectFit: "cover" }}
+        />
+        <div className={styles.itemOverlay}>
+          <span className={styles.itemOverlayText}>Cotar no WhatsApp →</span>
+        </div>
+      </div>
+      <div className={styles.itemMeta}>
+        <span className={styles.itemName}>{p.name}</span>
+        {p.detail && <span className={styles.itemDetail}>{p.detail}</span>}
+      </div>
+    </a>
   );
 }

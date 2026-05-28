@@ -1,6 +1,6 @@
 .section {
   background: var(--bg);
-  padding: 110px 24px 120px;
+  padding: clamp(4.5rem, 9vw, 7.5rem) clamp(1.5rem, 3vw, 1.5rem) clamp(5rem, 10vw, 8rem);
 }
 
 .inner {
@@ -11,7 +11,8 @@
 /* ── header ── */
 .header {
   text-align: center;
-  margin-bottom: 64px;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  width: 100%; /* evita overflow em flex containers */
 }
 
 .eyebrow {
