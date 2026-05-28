@@ -27,9 +27,11 @@ const cormorant = Cormorant_Garamond({
   display: "optional", // decorativo — sem CLS crítico
 });
 
+const SITE_URL = "https://wtjoias.com.br"; // ← atualizar com domínio real
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "WT Joias — Banhado a Ouro 18k",
-  themeColor: "#050505",
   description:
     "Cordões, pulseiras, anéis, pingentes e conjuntos femininos banhados a ouro 18k. Acabamento espelhado premium, modelos exclusivos. Atendimento via WhatsApp.",
   keywords: [
@@ -46,6 +48,31 @@ export const metadata: Metadata = {
     "joias premium",
     "dia dos namorados joias",
   ],
+  themeColor: "#050505",
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "WT Joias",
+    title: "WT Joias — Banhado a Ouro 18k",
+    description:
+      "Cordões, pulseiras, anéis, pingentes e conjuntos femininos banhados a ouro 18k. Atendimento via WhatsApp.",
+    locale: "pt_BR",
+    images: [
+      {
+        url: "/og-image.jpg",   // ← colocar na pasta public/
+        width: 1200,
+        height: 630,
+        alt: "WT Joias — Banhado a Ouro 18k",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "WT Joias — Banhado a Ouro 18k",
+    description:
+      "Cordões, pulseiras, anéis, pingentes e conjuntos femininos banhados a ouro 18k.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default function RootLayout({
