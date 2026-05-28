@@ -50,7 +50,7 @@
 /* ── grid ── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 16px;
 }
 
@@ -71,10 +71,9 @@
   display: block;
 }
 
-/* last 2 videos centred when grid breaks to 2-col row */
 @media (max-width: 900px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
