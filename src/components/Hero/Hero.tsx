@@ -39,6 +39,7 @@ export default function Hero({
   ],
 }: HeroProps) {
   const root        = useRef<HTMLElement>(null);
+  const hudRef      = useRef<HTMLElement>(null);
   const drawerRef   = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   const burgerRef   = useRef<HTMLButtonElement>(null);
@@ -49,15 +50,6 @@ export default function Hero({
 
   const [drawerOpen, setDrawerOpen]       = useState(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>(null);
-
-  /* Burger: native listener → state */
-  useEffect(() => {
-    const burger = burgerRef.current;
-    if (!burger) return;
-    const handleClick = () => setDrawerOpen((v) => !v);
-    burger.addEventListener("click", handleClick);
-    return () => burger.removeEventListener("click", handleClick);
-  }, []);
 
   /* Burger visual (X icon) */
   useEffect(() => {
@@ -142,7 +134,7 @@ export default function Hero({
       if (!scope) return;
 
       const overlay    = scope.querySelector<HTMLElement>(`.${styles.overlay}`);
-      const hud        = scope.querySelector<HTMLElement>(`.${styles.hud}`);
+      const hud        = hudRef.current;
       const eyebrow    = scope.querySelector<HTMLElement>(`.${styles.eyebrow}`);
       const words      = scope.querySelectorAll<HTMLElement>(`.${styles.word}`);
       const sub        = scope.querySelector<HTMLElement>(`.${styles.sub}`);
@@ -211,39 +203,8 @@ export default function Hero({
   );
 
   return (
-    <section ref={root} className={styles.hero}>
-      <video
-        className={styles.video}
-        src={videoSrc}
-        autoPlay muted loop playsInline preload="auto"
-      />
-      <div className={styles.overlay} />
-
-      <header className={styles.hud}>
-        <a href="#top" className={styles.logo} aria-label="WT Joias — início">
-          <Image
-            src="/logo.png"
-            alt="WT Joias"
-            width={680}
-            height={680}
-            sizes="(max-width: 640px) 58px, 84px"
-            className={styles.logoImg}
-            priority
-          />
-        </a>
-
-        <nav className={styles.nav}>
-          {navLinks.map((l) => (
-            <a key={l.href} className={styles.navLink} href={l.href}>{l.label}</a>
-          ))}
-        </nav>
-
-        <button ref={burgerRef} className={styles.burger} aria-label="Menu">
-          <span /><span /><span />
-        </button>
-      </header>
-
-      {/* Backdrop */}
+    <>
+      {/* Backdrop e drawer: position fixed, fora da section para cobrir tela cheia */}
       <div
         ref={backdropRef}
         className={styles.backdrop}
@@ -251,7 +212,6 @@ export default function Hero({
         onClick={closeDrawer}
       />
 
-      {/* Drawer lateral */}
       <div ref={drawerRef} className={styles.drawer} style={{ display: "none" }}>
         <button className={styles.drawerClose} onClick={closeDrawer} aria-label="Fechar menu">
           ✕
@@ -294,6 +254,44 @@ export default function Hero({
         </nav>
       </div>
 
+      <section ref={root} className={styles.hero}>
+      {/* HUD: position absolute dentro do hero — rola junto com o vídeo, some ao scrollar */}
+      <header ref={hudRef} className={styles.hud}>
+        <a href="#top" className={styles.logo} aria-label="WT Joias — início">
+          <Image
+            src="/logo.png"
+            alt="WT Joias"
+            width={680}
+            height={680}
+            sizes="(max-width: 640px) 58px, 84px"
+            className={styles.logoImg}
+            priority
+          />
+        </a>
+
+        <nav className={styles.nav}>
+          {navLinks.map((l) => (
+            <a key={l.href} className={styles.navLink} href={l.href}>{l.label}</a>
+          ))}
+        </nav>
+
+        <button
+          ref={burgerRef}
+          className={styles.burger}
+          aria-label="Menu"
+          onClick={() => setDrawerOpen((v) => !v)}
+        >
+          <span /><span /><span />
+        </button>
+      </header>
+
+      <video
+        className={styles.video}
+        src={videoSrc}
+        autoPlay muted loop playsInline preload="auto"
+      />
+      <div className={styles.overlay} />
+
       <div className={styles.content}>
         <span className={styles.eyebrow}>Banhado a Ouro 18k · Alta Qualidade</span>
 
@@ -333,6 +331,7 @@ export default function Hero({
         <span className={styles.scrollText}>scroll</span>
         <span className={styles.scrollLine} />
       </div>
-    </section>
+      </section>
+    </>
   );
 }
