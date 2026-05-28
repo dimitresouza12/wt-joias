@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -24,6 +24,46 @@ type Props = {
   igHandle?: string;
 };
 
+/* ── Lightbox ──────────────────────────────────────────────────────── */
+function Lightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const imgRef     = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const overlay = overlayRef.current;
+    const img     = imgRef.current;
+    if (!overlay || !img) return;
+    gsap.fromTo(overlay, { opacity: 0 },              { opacity: 1,  duration: 0.32, ease: "power3.out" });
+    gsap.fromTo(img,     { scale: 0.88, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.42, ease: "power3.out" });
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div ref={overlayRef} className={styles.lightboxOverlay} onClick={onClose} role="dialog" aria-modal>
+      <div ref={imgRef} className={styles.lightboxImgWrap} onClick={(e) => e.stopPropagation()}>
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="(max-width: 768px) 100vw, 90vw"
+          style={{ objectFit: "contain" }}
+          priority
+        />
+      </div>
+      <button className={styles.lightboxClose} onClick={onClose} aria-label="Fechar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  );
+}
+
 const HEARTS = [
   { top: "5%",  left: "2%",  fontSize: 22, opacity: 0.20, delay: 0.0, dy: 12, dur: 3.2 },
   { top: "9%",  left: "94%", fontSize: 17, opacity: 0.26, delay: 0.5, dy: 9,  dur: 2.8 },
@@ -34,7 +74,7 @@ const HEARTS = [
   { top: "82%", left: "50%", fontSize: 13, opacity: 0.09, delay: 1.1, dy: 7,  dur: 3.0 },
 ];
 
-function PromoCard({ peca, phone, igHandle, priority = false }: { peca: Peca; phone: string; igHandle: string; priority?: boolean }) {
+function PromoCard({ peca, phone, igHandle, priority = false, onExpand }: { peca: Peca; phone: string; igHandle: string; priority?: boolean; onExpand: (src: string, alt: string) => void }) {
   const [open, setOpen] = useState(false);
   const waHref = `https://wa.me/${phone}?text=${encodeURIComponent(peca.waMsg)}`;
   const igHref = igHandle ? `https://ig.me/m/${igHandle}` : "";
@@ -63,6 +103,20 @@ function PromoCard({ peca, phone, igHandle, priority = false }: { peca: Peca; ph
           <span className={styles.hintHeart}>♥</span>
           <span className={styles.hintText}>Toque para comprar</span>
         </div>
+
+        {/* Botão expandir — z-index acima do overlay, stopPropagation evita abrir contactOverlay */}
+        <button
+          className={styles.expandBtn}
+          onClick={(e) => { e.stopPropagation(); onExpand(peca.src, peca.name); }}
+          aria-label="Ver em tela cheia"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 3 21 3 21 9"/>
+            <polyline points="9 21 3 21 3 15"/>
+            <line x1="21" y1="3" x2="14" y2="10"/>
+            <line x1="3" y1="21" x2="10" y2="14"/>
+          </svg>
+        </button>
 
         <div
           className={styles.contactOverlay}
@@ -100,6 +154,9 @@ function PromoCard({ peca, phone, igHandle, priority = false }: { peca: Peca; ph
 
 export default function PromoNamorados({ phone, igHandle = "" }: Props) {
   const root = useRef<HTMLElement>(null);
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+  const openLightbox  = useCallback((src: string, alt: string) => setLightbox({ src, alt }), []);
+  const closeLightbox = useCallback(() => setLightbox(null), []);
 
   const promoMsg = (nome: string, genero: "ela" | "ele") =>
     `Olá! Vi a promoção de Dia dos Namorados no site da WT Joias. Tenho interesse ${genero === "ela" ? "no conjunto" : "no kit"} "${nome}" com desconto especial. Está disponível? #PromoNamorados`;
@@ -227,6 +284,10 @@ export default function PromoNamorados({ phone, igHandle = "" }: Props) {
   );
 
   return (
+    <>
+    {lightbox && (
+      <Lightbox src={lightbox.src} alt={lightbox.alt} onClose={closeLightbox} />
+    )}
     <section ref={root} className={styles.section} id="promo-namorados">
       <div className={styles.bg} aria-hidden />
 
@@ -265,7 +326,7 @@ export default function PromoNamorados({ phone, igHandle = "" }: Props) {
         </div>
         <div className={`${styles.grid} ${styles.grid4}`}>
           {femininos.map((p, i) => (
-            <PromoCard key={`f-${i}`} peca={p} phone={phone} igHandle={igHandle} priority={i < 2} />
+            <PromoCard key={`f-${i}`} peca={p} phone={phone} igHandle={igHandle} priority={i < 2} onExpand={openLightbox} />
           ))}
         </div>
 
@@ -277,7 +338,7 @@ export default function PromoNamorados({ phone, igHandle = "" }: Props) {
         </div>
         <div className={`${styles.grid} ${styles.grid3}`}>
           {masculinos.map((p, i) => (
-            <PromoCard key={`m-${i}`} peca={p} phone={phone} igHandle={igHandle} priority={i === 0} />
+            <PromoCard key={`m-${i}`} peca={p} phone={phone} igHandle={igHandle} priority={i === 0} onExpand={openLightbox} />
           ))}
         </div>
 
@@ -302,5 +363,6 @@ export default function PromoNamorados({ phone, igHandle = "" }: Props) {
 
       </div>
     </section>
+    </>
   );
 }

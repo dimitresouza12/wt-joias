@@ -7,6 +7,7 @@ import WhatsAppButton    from "@/components/WhatsAppButton/WhatsAppButton";
 import PromoNamorados    from "@/components/PromoNamorados/PromoNamorados";
 import AnuncioBanner     from "@/components/AnuncioBanner/AnuncioBanner";
 import VideoGaleria      from "@/components/VideoGaleria/VideoGaleria";
+import Footer            from "@/components/Footer/Footer";
 
 const WA_PHONE = "5588994068397";
 const WA_BASE  = `https://wa.me/${WA_PHONE}?text=`;
@@ -280,6 +281,9 @@ export default function Page() {
         phone={WA_PHONE}
         message="Olá! Acessei o site da WT Joias e gostaria de falar com um consultor para ver as peças banhadas a ouro 18k disponíveis."
       />
+
+      {/* Rodapé */}
+      <Footer />
     </main>
   );
 }
